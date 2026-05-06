@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Sans_Arabic } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
@@ -33,14 +34,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            <Header />
-            <main className="flex-1 container mx-auto px-4 py-8">
-              {children}
-            </main>
-            <Footer />
-            <ChatWidget />
-          </LanguageProvider>
+          <AuthProvider>
+            <LanguageProvider>
+              <Header />
+              <main className="flex-1 container mx-auto px-4 py-8">
+                {children}
+              </main>
+              <Footer />
+              <ChatWidget />
+            </LanguageProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

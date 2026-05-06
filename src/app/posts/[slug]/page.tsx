@@ -5,38 +5,20 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { api } from '@/lib/api';
+import { api, Post, Comment, RecommendationResponse } from '@/lib/api';
 import { formatDate, formatDateAr } from '@/lib/utils';
 
-interface Post {
-  id: string;
-  slug: string;
-  title: string;
-  title_en: string | null;
-  content: string;
-  content_en: string | null;
-  excerpt: string | null;
-  excerpt_en: string | null;
-  cover_image: string | null;
-  author_id: string;
-  category_id: string | null;
-  read_time: number;
-  views: number;
-  featured: boolean;
-  published_at: string | null;
-  created_at: string;
-  updated_at: string;
+interface PostDetail extends Post {
   category: { name: string; slug: string; color: string } | null;
-  tag_ids: string[];
 }
 
 export default function PostPage() {
   const { slug } = useParams() as { slug: string };
   const { language, t } = useLanguage();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<PostDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [recommendations, setRecommendations] = useState<any[]>([]);
-  const [comments, setComments] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<Post[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [commentForm, setCommentForm] = useState({ author_name: '', author_email: '', content: '' });
 
   useEffect(() => {
@@ -47,9 +29,9 @@ export default function PostPage() {
           api.posts.get(slug),
           api.recommendations(slug),
           api.comments.getByPost(slug),
-        ]) as [Post, { posts: any[] }, { comments: any[] }];
+        ]);
 
-        setPost(postRes);
+        setPost(postRes as unknown as PostDetail);
         setRecommendations(recRes.posts || []);
         setComments(commentsRes.comments || []);
       } catch (error) {
@@ -72,7 +54,7 @@ export default function PostPage() {
         post_id: post.id,
       });
       setCommentForm({ author_name: '', author_email: '', content: '' });
-      const updated = await api.comments.getByPost(post.id) as { comments: any[] };
+      const updated = await api.comments.getByPost(post.id);
       setComments(updated.comments || []);
     } catch (error) {
       console.error('Failed to submit comment:', error);

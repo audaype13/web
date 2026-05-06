@@ -3,38 +3,20 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { api } from '@/lib/api';
+import { api, PostWithCategory, Category } from '@/lib/api';
 import PostCard from '@/components/PostCard';
 import { cn } from '@/lib/utils';
-
-interface Post {
-  id: string;
-  slug: string;
-  title: string;
-  title_en: string | null;
-  excerpt: string | null;
-  excerpt_en: string | null;
-  cover_image: string | null;
-  read_time: number;
-  views: number;
-  featured: boolean;
-  published_at: string | null;
-  created_at: string;
-  category: { name: string; slug: string; color: string } | null;
-  tag_ids: string[];
-  tags?: { name: string; slug: string }[];
-}
 
 export default function HomeContent() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
   const categoryFilter = searchParams.get('category');
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostWithCategory[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState<{ id: string; name: string; slug: string; color: string }[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +29,7 @@ export default function HomeContent() {
             category: categoryFilter || undefined,
           }),
           api.categories.list(),
-        ]) as [{ posts: Post[]; total: number }, { categories: { id: string; name: string; slug: string; color: string }[] }];
+        ]);
 
         setPosts(postsRes.posts || []);
         setTotal(postsRes.total || 0);
@@ -112,8 +94,8 @@ export default function HomeContent() {
                   : 'border-border hover:border-primary'
               )}
               style={{
-                backgroundColor: categoryFilter === cat.slug ? cat.color : 'transparent',
-                color: categoryFilter === cat.slug ? '#fff' : cat.color,
+                backgroundColor: categoryFilter === cat.slug ? (cat.color || undefined) : 'transparent',
+                color: categoryFilter === cat.slug ? '#fff' : (cat.color || undefined),
               }}
             >
               {cat.name}

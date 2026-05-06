@@ -3,11 +3,13 @@
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
+  const { user, logout } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,6 +32,9 @@ export default function Header() {
             </Link>
             <Link href="/search" className="text-sm font-medium hover:text-primary transition-colors">
               {t('البحث', 'Search')}
+            </Link>
+            <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
+              {t('لوحة التحكم', 'Admin')}
             </Link>
           </nav>
 
@@ -78,6 +83,25 @@ export default function Header() {
               )}
             </button>
 
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden md:inline text-sm font-medium">{user.name}</span>
+                <button
+                  onClick={logout}
+                  className="px-3 py-1.5 text-sm border border-red-500/30 text-red-500 rounded-lg hover:bg-red-500/10 transition-colors"
+                >
+                  {t('خروج', 'Logout')}
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/admin/login"
+                className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                {t('دخول', 'Login')}
+              </Link>
+            )}
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-accent transition-colors"
@@ -106,6 +130,29 @@ export default function Header() {
               >
                 {t('البحث', 'Search')}
               </Link>
+              <Link
+                href="/admin"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('لوحة التحكم', 'Admin')}
+              </Link>
+              {!user ? (
+                <Link
+                  href="/admin/login"
+                  className="text-sm font-medium text-primary py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('تسجيل الدخول', 'Login')}
+                </Link>
+              ) : (
+                <button
+                  onClick={() => { logout(); setMobileMenuOpen(false); }}
+                  className="text-sm font-medium text-red-500 py-2 text-start"
+                >
+                  {t('تسجيل خروج', 'Logout')}
+                </button>
+              )}
               <div className="flex gap-2 pt-2">
                 <input
                   type="text"

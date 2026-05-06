@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { api } from '@/lib/api';
+import { api, PostWithCategory } from '@/lib/api';
 
 export default function SearchContent() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<PostWithCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(query);
   const [mode, setMode] = useState<'semantic' | 'keyword' | 'hybrid'>('hybrid');
@@ -22,8 +22,8 @@ export default function SearchContent() {
     const search = async () => {
       setLoading(true);
       try {
-        const data = await api.search(query, mode) as { results: any[] };
-        setResults(data.results || []);
+        const data = await api.search(query, mode);
+        setResults(data.posts || []);
       } catch (error) {
         console.error('Search failed:', error);
       } finally {
@@ -123,21 +123,14 @@ export default function SearchContent() {
                     </p>
                   )}
                   <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
-                    {result.category && <span>{result.category}</span>}
-                    {result.search_type && (
+                    {result.category && <span>{result.category.name}</span>}
+                    {result.tags && result.tags.length > 0 && (
                       <span className="px-1.5 py-0.5 bg-muted rounded">
-                        {result.search_type === 'semantic'
-                          ? t('دلالي', 'Semantic')
-                          : t('كلمات', 'Keyword')}
+                        {result.tags.map(t => `#${t.name}`).join(', ')}
                       </span>
                     )}
                   </div>
                 </div>
-                {result.score && (
-                  <span className="text-xs text-muted-foreground ms-4">
-                    {Math.round(result.score * 100)}%
-                  </span>
-                )}
               </div>
             </Link>
           ))}

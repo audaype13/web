@@ -40,7 +40,7 @@ export default function ChatWidget() {
         sessionId || undefined,
         undefined,
         undefined
-      ) as { session_id?: string; message: string };
+      );
 
       if (response.session_id && !sessionId) {
         setSessionId(response.session_id);
@@ -48,7 +48,7 @@ export default function ChatWidget() {
 
       const assistantMessage: Message = {
         role: 'assistant',
-        content: response.message || t('عذراً، لم أتمكن من الإجابة.', 'Sorry, I could not answer.'),
+        content: response.message || response.response || t('عذراً، لم أتمكن من الإجابة.', 'Sorry, I could not answer.'),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
