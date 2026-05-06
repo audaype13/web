@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { api } from '@/lib/api';
 
-export default function SearchPage() {
+function SearchContent() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -144,5 +144,21 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-20 bg-muted rounded-xl animate-pulse" />
+          ))}
+        </div>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }
