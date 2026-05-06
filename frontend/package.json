@@ -1,0 +1,45 @@
+{
+  "name": "ai-powered-personal-blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "ai": "^3.1.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "@supabase/ssr": "^0.1.0",
+    "next-auth": "^4.24.0",
+    "zod": "^3.22.0",
+    "date-fns": "^3.6.0",
+    "i18next": "^23.10.0",
+    "react-i18next": "^14.1.0",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
+    "class-variance-authority": "^0.7.0",
+    "lucide-react": "^0.363.0",
+    "sonner": "^1.4.0",
+    "usehooks-ts": "^3.1.0",
+    "next-themes": "^0.2.1",
+    "@radix-ui/react-slot": "^1.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.2.0",
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "nav": {
+    "home": "Home",
+    "posts": "Posts",
+    "search": "Search",
+    "chat": "Assistant"
+  },
+  "home": {
+    "title": "Personal Blog",
+    "subtitle": "AI-powered personal blog",
+    "cta": "Browse Posts",
+    "chatCta": "Chat with Assistant",
+    "features": "Key Features",
+    "contentGeneration": "Content Generation",
+    "contentGenerationDesc": "Use AI to generate article drafts",
+    "writingImprovement": "Writing Improvement",
+    "writingImprovementDesc": "Improve your content quality with AI tools",
+    "smartSearch": "Smart Search",
+    "smartSearchDesc": "Search articles with semantic search"
+  },
+  "posts": {
+    "title": "Articles",
+    "readMore": "Read More",
+    "minRead": "min read"
+  },
+  "search": {
+    "placeholder": "Search articles...",
+    "noResults": "No results found",
+    "semanticResults": "Semantic results",
+    "keywordResults": "Keyword results"
+  },
+  "chat": {
+    "title": "Smart Assistant",
+    "placeholder": "Type your message...",
+    "send": "Send",
+    "sources": "Sources"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry"
+  }
+}
